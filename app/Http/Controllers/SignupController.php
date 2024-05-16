@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\loginFormRequest;
+use App\Http\Requests\signupFormRequest;
 use App\Models\User;
 
-class LoginController extends Controller
+class SignupController extends Controller
 {
-    public function loginPage()
+    public function signupPage()
     {
-        return view('login');
+        return view('signup ');
     }
 
-    public function storeData(loginFormRequest $request)
+    public function storeData(signupFormRequest $request)
     {
         $data = new User;
         $data->full_name = $request->fullName;

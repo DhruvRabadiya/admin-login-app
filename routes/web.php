@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', [LoginController::class, 'loginPage'])->name('Login');
+Route::get('/signup', [SignupController::class, 'signupPage'])->name('signup');
 
-Route::post('/login', [LoginController::class, 'storeData']);
+Route::post('/signup', [SignupController::class, 'storeData'])->name('signup');

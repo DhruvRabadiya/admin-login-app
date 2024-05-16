@@ -7,12 +7,11 @@
                 <div class="alert alert-success my-4">{{ session('success')}}</div>
             @endif
             <div class="card-header text-center">
-                <a href="#" class="h1"><b>User</b>Login</a>
+                <a href="#" class="h1"><b>User</b>Signup</a>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="{{url('/')}}/login" method="post" class="formGrid">
+                <form action="{{Route('signup')}}" method="post" class="formGrid">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="text" name="fullName" class="form-control" placeholder="Full Name" value="{{old('fullName')}}">
@@ -67,20 +66,20 @@
                     </div>
                 </form>
 
-                <div class="social-auth-links text-center mt-2 mb-3">
+                <div class="social-auth-links text-center mt-2 mb-3 hidden">
                     <a href="#" class="btn btn-block btn-primary">
                         Sign in using Facebook
                     </a>
-                    <a href="#" class="btn btn-block btn-danger">
+                    <a href="#" class="btn btn-block btn-danger hidden">
                         Sign in using Google+
                     </a>
                 </div>
                 <!-- /.social-auth-links -->
 
-                <p class="mb-1">
+                <p class="mb-1 hidden">
                     <a href="forgot-password.html">I forgot my password</a>
                 </p>
-                <p class="mb-0">
+                <p class="mb-0 hidden">
                     <a href="register.html" class="text-center">Register a new membership</a>
                 </p>
             </div>

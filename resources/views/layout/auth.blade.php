@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  @include('.asset.head' ,['title' => 'AdminLTE 3 | Log in (v2)'])
+  @include('.asset.head' ,['title' => 'SignUp'])
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="{{ asset('css/icheck-bootstrap.min.css') }}">
 </head>
