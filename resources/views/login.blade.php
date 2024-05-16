@@ -3,32 +3,53 @@
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
+            @if (session('success'))
+                <div class="alert alert-success my-4">{{ session('success')}}</div>
+            @endif
             <div class="card-header text-center">
                 <a href="#" class="h1"><b>User</b>Login</a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="" method="post" class="formGrid">
+                <form action="{{url('/')}}/login" method="post" class="formGrid">
+                    @csrf
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Full Name">
-
+                        <input type="text" name="fullName" class="form-control" placeholder="Full Name" value="{{old('fullName')}}">
                     </div>
+                    @error('fullName')
+                        <div class="text-danger mb-3">{{ $message }}</div>
+                    @enderror
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Username">
+                        <input type="text" class="form-control" placeholder="Username" name="userName" value="{{old('userName')}}">
                     </div>
+                    @error('userName')
+                        <div class="text-danger mb-3">{{ $message }}</div>
+                    @enderror
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input type="email" class="form-control" placeholder="Email" name="email" value="{{old('email')}}">
                     </div>
+                    @error('email')
+                        <div class="text-danger mb-3">{{ $message }}</div>
+                    @enderror
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
+                        <input type="password" class="form-control" placeholder="Password" name="password" value="{{old('password')}}">
                     </div>
+                    @error('password')
+                        <div class="text-danger mb-3">{{ $message }}</div>
+                    @enderror
                     <div class="input-group mb-3">
-                        <input type="tel" class="form-control" placeholder="Mobile Number">
+                        <input type="tel" class="form-control" placeholder="Mobile Number" name="mobileNumber" value="{{old('mobileNumber')}}">
                     </div>
+                    @error('mobileNumber')
+                        <div class="text-danger mb-3">{{ $message }}</div>
+                    @enderror
                     <div class="input-group mb-3">
-                        <input type="date" class="form-control" placeholder="Date Of Birth">
+                        <input type="date" class="form-control" placeholder="Date Of Birth" name='DateOfBirth' value="{{old('DateOfBirth')}}">
                     </div>
+                    @error('DateOfBirth')
+                        <div class="text-danger mb-3">{{ $message }}</div>
+                    @enderror
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
@@ -48,10 +69,10 @@
 
                 <div class="social-auth-links text-center mt-2 mb-3">
                     <a href="#" class="btn btn-block btn-primary">
-                         Sign in using Facebook
+                        Sign in using Facebook
                     </a>
                     <a href="#" class="btn btn-block btn-danger">
-                         Sign in using Google+
+                        Sign in using Google+
                     </a>
                 </div>
                 <!-- /.social-auth-links -->
