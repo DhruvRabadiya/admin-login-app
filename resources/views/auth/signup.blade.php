@@ -1,4 +1,4 @@
-@extends('layout.auth')
+@extends('layout.auth' ,['title' => 'Signup'])
 @section('mainContent')
     <div class="login-box">
         <!-- /.login-logo -->
@@ -11,7 +11,7 @@
             </div>
             <div class="card-body">
 
-                <form action="{{Route('signup')}}" method="post" class="formGrid">
+                <form action="{{Route('signup.post')}}" method="post" class="formGrid">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="text" name="fullName" class="form-control" placeholder="Full Name" value="{{old('fullName')}}">
@@ -49,7 +49,7 @@
                     @error('DateOfBirth')
                         <div class="text-danger mb-3">{{ $message }}</div>
                     @enderror
-                    <div class="row">
+                        <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
                                 <input type="checkbox" id="remember">
@@ -66,21 +66,21 @@
                     </div>
                 </form>
 
-                <div class="social-auth-links text-center mt-2 mb-3 hidden">
+                <div class="social-auth-links text-center mt-2 mb-3 hidden  ">
                     <a href="#" class="btn btn-block btn-primary">
                         Sign in using Facebook
                     </a>
-                    <a href="#" class="btn btn-block btn-danger hidden">
+                    <a href="#" class="btn btn-block btn-danger  ">
                         Sign in using Google+
                     </a>
                 </div>
                 <!-- /.social-auth-links -->
 
-                <p class="mb-1 hidden">
+                <p class="mb-1  ">
                     <a href="forgot-password.html">I forgot my password</a>
                 </p>
-                <p class="mb-0 hidden">
-                    <a href="register.html" class="text-center">Register a new membership</a>
+                <p class="mb-0  ">
+                    <a href="{{Route('login')}}" class="text-center">Already registered ? Login hear!</a>
                 </p>
             </div>
             <!-- /.card-body -->

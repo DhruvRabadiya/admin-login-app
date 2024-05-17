@@ -37444,6 +37444,7 @@ a.disabled.mailbox-attachment-close {
 }
 .login-box,
 .register-box {
+    margin-top: 14rem;
     width: 360px;
 }
 @media (max-width: 576px) {
@@ -37455,8 +37456,8 @@ a.disabled.mailbox-attachment-close {
 }
 .login-box .card,
 .register-box .card {
-        margin-top: 18rem;
-    margin-bottom: 0;
+    margin-top: 18rem;
+    margin-bottom: 10rem;
 }
 .login-card-body,
 .register-card-body {

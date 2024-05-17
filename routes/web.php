@@ -1,8 +1,15 @@
 <?php
 
-use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
-Route::get('/signup', [SignupController::class, 'signupPage'])->name('signup');
+Route::middleware('auth')->group(function () {
+    Route::view('/profile', 'profile')->name('profile');//->middleware('AuthUser');
+});
+Route::get('/signup', [AuthController::class, 'signupPage'])->name('signup');
 
-Route::post('/signup', [SignupController::class, 'storeData'])->name('signup');
+Route::post('/signup', [AuthController::class, 'storeData'])->name('signup.post');
+
+
+Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
+Route::post('/login', [AuthController::class, 'loginUser'])->name('login.post');
