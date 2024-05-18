@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-Route::middleware('auth')->group(function () {
-    Route::view('/profile', 'profile')->name('profile');//->middleware('AuthUser');
+Route::middleware('AuthUser')->group(function () {
+    Route::view('/profile', 'profile')->name('profile');
 });
 Route::get('/signup', [AuthController::class, 'signupPage'])->name('signup');
 

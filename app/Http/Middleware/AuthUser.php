@@ -15,6 +15,8 @@ class AuthUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if(!Auth::user()){
+            abort(401);
+        }        return $next($request);
     }
 }
