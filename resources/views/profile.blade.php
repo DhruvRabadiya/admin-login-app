@@ -20,6 +20,13 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
                 </li>
+                
+                <li class="nav-item d-none d-sm-inline-block">
+                    <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary bg-red">Logout</button>
+                </form>
+                </li>
             </ul>
 
             <!-- Right navbar links -->
@@ -1275,10 +1282,10 @@
     <!-- jQuery -->
     <script src="{{ asset('js/profile/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
-<!-- Bootstrap 4 -->
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('js/adminlte.min.js') }}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('js/profile/demo.js') }}"></script>
 </body>

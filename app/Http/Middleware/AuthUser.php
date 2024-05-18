@@ -16,7 +16,9 @@ class AuthUser
     public function handle(Request $request, Closure $next): Response
     {
         if(!Auth::user()){
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
             abort(401);
-        }        return $next($request);
+        }        
+        return $next($request);
     }
 }
