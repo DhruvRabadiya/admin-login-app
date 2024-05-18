@@ -11,6 +11,9 @@ class AuthController extends Controller
 {
     public function signupPage()
     {
+        if (Auth::user()) {
+            return redirect()->route('profile');
+        } 
         return view('auth.signup');
     }
 
@@ -30,6 +33,9 @@ class AuthController extends Controller
 
     public function loginPage()
     {
+        if (Auth::user()) {
+            return redirect()->route('profile');
+        } 
         return view('auth.login');
     }
     public function loginUser(Request $request)

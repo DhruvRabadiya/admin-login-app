@@ -17,8 +17,8 @@ class AuthUser
     {
         if(!Auth::user()){
             return redirect()->route('login')->with('error', 'Please login to access this page.');
-            abort(401);
-        }        
+        }
+              
         return $next($request);
     }
 }
