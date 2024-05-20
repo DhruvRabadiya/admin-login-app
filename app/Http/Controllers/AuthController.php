@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\AuthRequest;
 use Illuminate\Support\Facades\Auth;
-
+use Yajra\DataTables\DataTables;
 class AuthController extends Controller
 {
     public function signupPage()
@@ -61,5 +61,24 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login')->with('success', 'You have been logged out.');
+    }
+    public function allUsers(Request $request)
+    {
+        if (Auth::user()) {
+            if ($request->ajax()) {
+            $data = User::select(['id', 'full_name', 'user_name', 'email', 'mobile_number', 'date_of_birth']);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">Edit</a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('users');
+    }
+    return redirect()->route('profile');
+        
     }
 }

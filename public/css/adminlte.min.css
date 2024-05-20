@@ -1079,9 +1079,10 @@ pre code {
         max-width: 16.666667%;
     }
     .col-md-3 {
-        -ms-flex: 0 0 25%;
-        flex: 0 0 25%;
-        max-width: 25%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin:0 auto;
     }
     .col-md-4 {
         -ms-flex: 0 0 33.333333%;
@@ -11047,7 +11048,7 @@ body.sidebar-collapse:not(.sidebar-mini-xs):not(.sidebar-mini-md):not(
     body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav)
         .main-header {
         transition: margin-left 0.3s ease-in-out;
-        margin-left: 250px;
+        /* margin-left: 250px; */
     }
 }
 @media (min-width: 768px) and (prefers-reduced-motion: reduce) {
@@ -37444,7 +37445,7 @@ a.disabled.mailbox-attachment-close {
 }
 .login-box,
 .register-box {
-    margin-top: 14rem;
+    /* margin-top: 14rem; */
     width: 360px;
 }
 @media (max-width: 576px) {
@@ -37456,8 +37457,8 @@ a.disabled.mailbox-attachment-close {
 }
 .login-box .card,
 .register-box .card {
-    margin-top: 18rem;
-    margin-bottom: 10rem;
+    /* margin-top: 18rem; */
+    margin-bottom: 0rem;
 }
 .login-card-body,
 .register-card-body {
