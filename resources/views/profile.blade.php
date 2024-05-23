@@ -5,7 +5,7 @@
         @include('.includes.nav')
         <!-- /.navbar -->
 
-
+        @include('includes.aside')
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -34,11 +34,11 @@
                             <div class="card card-primary card-outline">
                                 <div class="card-body box-profile">
                                     <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle"
-                                            src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                        <img class="profile-user-img img-fluid img-circle" src="/img/user4.jpg"
+                                            alt="User profile picture">
                                     </div>
 
-                                    <h3 class="profile-username text-center">Nina Mcintire</h3>
+                                    <h3 class="profile-username text-center">{{ $user->full_name }}</h3>
 
                                     <p class="text-muted text-center">Software Engineer</p>
 
@@ -110,13 +110,7 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-                <b>Version</b> 3.2.0
-            </div>
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
-            reserved.
-        </footer>
+        @include('includes.footer')
 
     </div>
     <!-- ./wrapper -->

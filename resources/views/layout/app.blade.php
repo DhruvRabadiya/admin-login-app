@@ -10,7 +10,7 @@
     @yield('mainContent')
     <!-- jQuery -->
     <script src="{{ asset('js/profile/jquery.min.js') }}"></script>
-    <!-- Bootstrap 4 -->
+
     <!-- Bootstrap 4 -->
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->

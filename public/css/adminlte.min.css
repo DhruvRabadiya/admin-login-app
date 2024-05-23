@@ -11048,7 +11048,7 @@ body.sidebar-collapse:not(.sidebar-mini-xs):not(.sidebar-mini-md):not(
     body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav)
         .main-header {
         transition: margin-left 0.3s ease-in-out;
-        /* margin-left: 250px; */
+        margin-left: 250px;
     }
 }
 @media (min-width: 768px) and (prefers-reduced-motion: reduce) {
@@ -11250,6 +11250,12 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
     border-top: 1px solid #dee2e6;
     color: #869099;
     padding: 1rem;
+}
+.footer-div{
+    position: absolute;
+    bottom: 0;
+    width: 100%
+    ;
 }
 .main-footer.text-sm,
 .text-sm .main-footer {
