@@ -60,10 +60,10 @@ class UserController extends Controller
             'password' => bcrypt($request->get('password')),
             'mobile_number' => $request->get('mobile_number'),
             'date_of_birth' => $request->get('date_of_birth'),
-            ]);
+        ]);
 
-            return response()->json([
-                'success' => "User added Successfully",
-                ],201);
+        return response()->json([
+            'success' => "User added Successfully",
+        ], 201);
     }
 }

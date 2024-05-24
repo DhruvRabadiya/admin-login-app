@@ -129,7 +129,10 @@
     <script src="{{ asset('js/adminlte.min.js') }}"></script>
     <!-- SweetAlert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+ <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
+    
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
