@@ -189,15 +189,18 @@
             $('#add_Users').click(function() {
                 $('.modal-title').text('Add New User');
                 $('#action_btn').val('Add User');
+                // $('#action_btn').attr('disabled' ,true); 
                 $('#action').val('Add');
                 $('#form_result').html('');
                 $('#staticBackdrop').modal('show');
                 $('#user_form')[0].reset();
+                 $('.pass').show();
             });
 
             var form = $('#user_form')[0];
 
             $('#action_btn').click(function() {
+                $('#action_btn').attr('disabled', true);
                 $('.errors').html('');
                 var formData = new FormData(form);
 
@@ -208,6 +211,8 @@
                     contentType: false,
                     data: formData,
                     success: function(response) {
+                        $('#action_btn').attr('disabled', false);
+
                         $('#staticBackdrop').modal('hide');
                         if (response) {
                             swal("Success!", response.success, "success");
@@ -215,6 +220,7 @@
                         $('#tables_data').DataTable().ajax.reload();
                     },
                     error: function(error) {
+                        $('#action_btn').attr('disabled', false);
                         if (error.responseJSON && error.responseJSON.errors) {
                             var errors = error.responseJSON.errors;
                             $('#full_name_error').html(errors.full_name ? errors.full_name[0] :
@@ -248,12 +254,12 @@
                         $('#date_of_birth').val(response.date_of_birth);
 
                         $('#user_id').val(response.id)
-                        // $('.pass').hide();
                         $('.modal-title').text('Edit User');
                         $('#action_btn').val('Edit User');
                         $('#action').val('Edit');
                         $('#form_result').html('');
                         $('#staticBackdrop').modal('show');
+                        $('.pass').hide();
                     },
                     error: function(response) {
                         console.log(response);
@@ -261,12 +267,28 @@
                 })
             });
             $('body').on('click', '.deleteBtn', function() {
-               var id = $(this).data('id');
-        })
+                var id = $(this).data('id');
+
+                if(confirm('Are You Sure Want To Delete This User?')){
+                    $.ajax({
+                    url: "{{ route('deleteUser', '') }}/" + id,
+                    method: 'DELETE',
+                    success: function(response) {
+                        swal("Success!", response.success, "success");
+                        $('#tables_data').DataTable().ajax.reload();
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                })
+                }
+            })
 
             $('.btn-close, .btn-secondary').click(function() {
+                $('.errors').html('');
                 $('#staticBackdrop').modal('hide');
             });
+            
         });
     </script>
 @endsection

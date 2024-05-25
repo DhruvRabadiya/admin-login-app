@@ -62,7 +62,7 @@ class UserController extends Controller
                 'date_of_birth' => $request->get('date_of_birth'),
             ]);
             return response()->json([
-                'success' => "User added Successfully",
+                'success' => "User Edited Successfully",
             ], 201); 
         } else {
 
@@ -86,7 +86,7 @@ class UserController extends Controller
             ]);
 
             return response()->json([
-                'success' => "User added Successfully",
+                'success' => "User Added Successfully",
             ], 201);
         }
     }
@@ -96,6 +96,20 @@ class UserController extends Controller
         $user = User::find($id);
         if ($user) {
             return response()->json($user);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+    }
+
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user -> delete(); 
+            return response()->json([
+                'success' => 'User Deleted Successfully'
+                ] , 201);
         } else {
             return response()->json(['error' => 'User not found'], 404);
         }
