@@ -9,6 +9,10 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/profile','profilePage')->name('profile')->middleware('AuthUser');
     Route::get('/allUsers', 'allUsers')->name('allUsers');
     Route::post('/addUser' ,'addUser')->name('addUser');
+    Route::get('/editUser/{id}', 'editUser')->name('editUser');
+    Route::get('/deleteUser/{id}', 'deleteUser')->name('deleteUser');
+
+
 });
 Route::controller(AuthController::class)->group(function () {
 

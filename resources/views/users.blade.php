@@ -63,14 +63,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New kkkkk </h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="user_form">
                         {{-- @csrf --}}
                         <meta name="csrf-token" content="{{ csrf_token() }}" />
-
+                        <input type="hidden" name="user_id" id="user_id">
                         <div class="form-group">
                             <label for="full_name">Full Name</label>
                             <input type="text" class="form-control" id="full_name" name="full_name" required>
@@ -87,7 +87,7 @@
                             <input type="email" class="form-control" id="email" name="email" required>
                             <span id="email_error" class ='text-danger errors'></span>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group pass">
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                             <span id="password_error" class ='text-danger errors'></span>
@@ -129,10 +129,10 @@
     <script src="{{ asset('js/adminlte.min.js') }}"></script>
     <!-- SweetAlert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
-    
+
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -192,6 +192,7 @@
                 $('#action').val('Add');
                 $('#form_result').html('');
                 $('#staticBackdrop').modal('show');
+                $('#user_form')[0].reset();
             });
 
             var form = $('#user_form')[0];
@@ -222,7 +223,7 @@
                                 '');
                             $('#email_error').html(errors.email ? errors.email[0] : '');
                             $('#password_error').html(errors.password ? errors.password[0] :
-                            '');
+                                '');
                             $('#mobile_number_error').html(errors.mobile_number ? errors
                                 .mobile_number[0] : '');
                             $('#dob_error').html(errors.date_of_birth ? errors.date_of_birth[
@@ -231,6 +232,37 @@
                     }
                 });
             });
+
+            //edit button
+            $('body').on('click', '.editBtn', function() {
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url: "{{ route('editUser', '') }}/" + id,
+                    method: 'GET',
+                    success: function(response) {
+                        $('#full_name').val(response.full_name);
+                        $('#user_name').val(response.user_name);
+                        $('#email').val(response.email);
+                        $('#mobile_number').val(response.mobile_number);
+                        $('#date_of_birth').val(response.date_of_birth);
+
+                        $('#user_id').val(response.id)
+                        // $('.pass').hide();
+                        $('.modal-title').text('Edit User');
+                        $('#action_btn').val('Edit User');
+                        $('#action').val('Edit');
+                        $('#form_result').html('');
+                        $('#staticBackdrop').modal('show');
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                })
+            });
+            $('body').on('click', '.deleteBtn', function() {
+               var id = $(this).data('id');
+        })
 
             $('.btn-close, .btn-secondary').click(function() {
                 $('#staticBackdrop').modal('hide');
