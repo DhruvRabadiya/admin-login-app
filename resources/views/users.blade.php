@@ -68,45 +68,41 @@
                 </div>
                 <div class="modal-body">
                     <form id="user_form">
-                        {{-- @csrf --}}
                         <meta name="csrf-token" content="{{ csrf_token() }}" />
                         <input type="hidden" name="user_id" id="user_id">
                         <div class="form-group">
                             <label for="full_name">Full Name</label>
                             <input type="text" class="form-control" id="full_name" name="full_name" required>
-                            <span id="full_name_error" class ='text-danger errors'></span>
+                            <span id="full_name_error" class='text-danger errors'></span>
                         </div>
                         <div class="form-group">
                             <label for="user_name">Username</label>
                             <input type="text" class="form-control" id="user_name" name="user_name" required>
-                            <span id="user_name_error" class ='text-danger errors'></span>
-
+                            <span id="user_name_error" class='text-danger errors'></span>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>
-                            <span id="email_error" class ='text-danger errors'></span>
+                            <span id="email_error" class='text-danger errors'></span>
                         </div>
                         <div class="form-group pass">
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required>
-                            <span id="password_error" class ='text-danger errors'></span>
+                            <span id="password_error" class='text-danger errors'></span>
                         </div>
                         <div class="form-group">
                             <label for="mobile_number">Mobile Number</label>
                             <input type="text" class="form-control" id="mobile_number" name="mobile_number" required>
-                            <span id="mobile_number_error" class ='text-danger errors'></span>
+                            <span id="mobile_number_error" class='text-danger errors'></span>
                         </div>
                         <div class="form-group">
                             <label for="date_of_birth">Date of Birth</label>
                             <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
-                            <span id="dob_error" class ='text-danger errors'></span>
+                            <span id="dob_error" class='text-danger errors'></span>
                         </div>
                     </form>
                     <span id="form_result"></span>
                     <input type="hidden" name="action" id="action" value="Add">
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -132,7 +128,6 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
-
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -141,7 +136,7 @@
                 }
             });
 
-            $('#tables_data').DataTable({
+            var table = $('#tables_data').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('allUsers') }}",
@@ -189,20 +184,17 @@
             $('#add_Users').click(function() {
                 $('.modal-title').text('Add New User');
                 $('#action_btn').val('Add User');
-                // $('#action_btn').attr('disabled' ,true); 
                 $('#action').val('Add');
                 $('#form_result').html('');
                 $('#staticBackdrop').modal('show');
                 $('#user_form')[0].reset();
-                 $('.pass').show();
+                $('.pass').show();
             });
-
-            var form = $('#user_form')[0];
 
             $('#action_btn').click(function() {
                 $('#action_btn').attr('disabled', true);
                 $('.errors').html('');
-                var formData = new FormData(form);
+                var formData = new FormData($('#user_form')[0]);
 
                 $.ajax({
                     url: '{{ route('addUser') }}',
@@ -212,12 +204,12 @@
                     data: formData,
                     success: function(response) {
                         $('#action_btn').attr('disabled', false);
-
                         $('#staticBackdrop').modal('hide');
-                        if (response) {
+                        if (response.success) {
                             swal("Success!", response.success, "success");
+                            table.ajax.reload(null,
+                                false); // Reload the DataTable without resetting the pagination
                         }
-                        $('#tables_data').DataTable().ajax.reload();
                     },
                     error: function(error) {
                         $('#action_btn').attr('disabled', false);
@@ -239,7 +231,7 @@
                 });
             });
 
-            //edit button
+            // Edit button handler
             $('body').on('click', '.editBtn', function() {
                 var id = $(this).data('id');
 
@@ -253,7 +245,7 @@
                         $('#mobile_number').val(response.mobile_number);
                         $('#date_of_birth').val(response.date_of_birth);
 
-                        $('#user_id').val(response.id)
+                        $('#user_id').val(response.id);
                         $('.modal-title').text('Edit User');
                         $('#action_btn').val('Edit User');
                         $('#action').val('Edit');
@@ -264,31 +256,36 @@
                     error: function(response) {
                         console.log(response);
                     }
-                })
+                });
             });
+
+            // Delete button handler
             $('body').on('click', '.deleteBtn', function() {
                 var id = $(this).data('id');
 
-                if(confirm('Are You Sure Want To Delete This User?')){
+                if (confirm('Are You Sure Want To Delete This User?')) {
                     $.ajax({
-                    url: "{{ route('deleteUser', '') }}/" + id,
-                    method: 'DELETE',
-                    success: function(response) {
-                        swal("Success!", response.success, "success");
-                        $('#tables_data').DataTable().ajax.reload();
-                    },
-                    error: function(response) {
-                        console.log(response);
-                    }
-                })
+                        url: "{{ route('deleteUser', '') }}/" + id,
+                        method: 'DELETE',
+                        success: function(response) {
+                            if (response.success) {
+                                swal("Success!", response.success, "success");
+                                table.ajax.reload(null,
+                                    false
+                                    ); // Reload the DataTable without resetting the pagination
+                            }
+                        },
+                        error: function(response) {
+                            console.log(response);
+                        }
+                    });
                 }
-            })
+            });
 
             $('.btn-close, .btn-secondary').click(function() {
                 $('.errors').html('');
                 $('#staticBackdrop').modal('hide');
             });
-            
         });
     </script>
 @endsection
