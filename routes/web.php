@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\CategoryController;
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/profile','profilePage')->name('profile')->middleware('AuthUser');
@@ -14,6 +14,11 @@ Route::controller(UserController::class)->group(function () {
 
 
 });
+
+Route::controller(CategoryController::class)->group(function (){
+    Route::get('/category' , 'category')->name('category');
+});
+
 Route::controller(AuthController::class)->group(function () {
 
     Route::get('/signup',  'signupPage')->name('signup');

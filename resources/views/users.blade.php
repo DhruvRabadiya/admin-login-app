@@ -2,33 +2,38 @@
 
     @section('mainContent')
         <div class="wrapper">
-            <div class="sidebar-mini">
-                @include('includes.nav')
-                @include('includes.aside')
-                <div class="content-wrapper">
-                    <section class="content-header">
-                        <div class="container-fluid">
-                            <div class="row mb-2">
-                                <div class="col-sm-6">
-                                    <h1>All New User</h1>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ol class="breadcrumb float-sm-right">
-                                        <li class="breadcrumb-item active">Users Details</li>
-                                    </ol>
-                                </div>
+
+            @include('includes.nav')
+            @include('includes.aside')
+
+            <div class="content-wrapper">
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1>All New User</h1>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item active">Users Details</li>
+                                </ol>
                             </div>
                         </div>
-                        <div align="right">
-                            <button type="button" name="add_Users" id="add_Users" class="btn btn-success"> Add Users</button>
-                        </div><!-- /.container-fluid -->
-                    </section>
+                    </div>
+                    <div align="right">
+                        <button type="button" name="add_Users" id="add_Users" class="btn btn-success"> Add
+                            Users</button>
+                    </div><!-- /.container-fluid -->
+                </section>
 
+                <section class="content">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card card-primary card-outline">
                                     <div class="card-body box-profile">
+
+
                                         <div class="text-center">
                                             <section class="content">
                                                 <table class="table table-bordered" id="tables_data">
@@ -48,15 +53,24 @@
                                                 </table>
                                             </section>
                                         </div>
+
                                     </div>
+                                    <!-- /.card -->
                                 </div>
+                                <!-- /.col -->
                             </div>
+                            <!-- /.row -->
                         </div>
                     </div>
-                </div>
+                    <!-- /.container-fluid -->
+                </section>
+                <!-- /.content -->
             </div>
+            <!-- /.content-wrapper -->
             @include('includes.footer')
+
         </div>
+        <!-- ./wrapper -->
 
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -118,14 +132,14 @@
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <!-- DataTables -->
-        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+       <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
         <!-- AdminLTE App -->
-        <script src="{{ asset('js/adminlte.min.js') }}"></script>
+        {{-- <script src="{{ asset('js/adminlte.min.js') }}"></script> --}}
         <!-- SweetAlert -->
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+        
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
         <script>
@@ -249,7 +263,7 @@
                             $('#action_btn').val('Edit User');
                             $('#action').val('Edit');
                             $('.pass').hide(),
-                            $('#form_result').html('');
+                                $('#form_result').html('');
                             $('#staticBackdrop').modal('show');
                         },
                         error: function(response) {
