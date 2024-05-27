@@ -115,3 +115,11 @@
     </div>
     <!-- ./wrapper -->
 @endsection
+
+
+@section('scripts')
+    <script src="{{ asset('js/profile/demo.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/profile/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/adminlte.min.js') }}"></script>
+@endsection
