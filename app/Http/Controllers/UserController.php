@@ -25,9 +25,6 @@ class UserController extends Controller
                 return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($data) use ($user) {
-                        $showButton = $user->id !== $data->id
-                            ? '<button type="button" class="showBtn btn btn-warning btn-sm ml-2" data-id="' . $data->id . '">Show</button>'
-                            : '';
 
                         $editButton = '<button type="button" class="editBtn btn btn-primary btn-sm ml-2" data-id="' . $data->id . '">Edit</button>';
 
@@ -36,7 +33,7 @@ class UserController extends Controller
                             : '';
 
 
-                        return $showButton . $editButton . $deleteButton;
+                        return  $editButton . $deleteButton;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
@@ -63,7 +60,7 @@ class UserController extends Controller
             ]);
             return response()->json([
                 'success' => "User Edited Successfully",
-            ], 201); 
+            ], 201);
         } else {
 
             $request->validate(
@@ -106,10 +103,10 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if ($user) {
-            $user -> delete(); 
+            $user->delete();
             return response()->json([
                 'success' => 'User Deleted Successfully'
-                ] , 201);
+            ], 201);
         } else {
             return response()->json(['error' => 'User not found'], 404);
         }
