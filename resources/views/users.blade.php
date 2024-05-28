@@ -199,6 +199,7 @@
                     $('.modal-title').text('Add New User');
                     $('#action_btn').val('Add User');
                     $('#action').val('Add');
+                    $('#user_id').val(''); 
                     $('#form_result').html('');
                     $('#staticBackdrop').modal('show');
                     $('#user_form')[0].reset();

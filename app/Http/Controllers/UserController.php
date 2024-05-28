@@ -46,18 +46,18 @@ class UserController extends Controller
     public function addUser(Request $request)
     {
         if ($request->user_id != null) {
-            $userId =  User::find($request->user_id);
-            if (!$userId) {
+            $user = User::find($request->user_id);
+            if (!$user) {
                 abort(404);
             }
-            $userId->update([
-                'full_name' => $request->get('full_name'),
-                'user_name' => $request->get('user_name'),
-                'email' => $request->get('email'),
-                'password' => bcrypt($request->get('password')),
-                'mobile_number' => $request->get('mobile_number'),
-                'date_of_birth' => $request->get('date_of_birth'),
-            ]);
+
+            $data = $request->only(['full_name', 'user_name', 'email', 'mobile_number', 'date_of_birth']);
+            // Don't update the password if it's not provided
+            if ($request->filled('password')) {
+                $data['password'] = bcrypt($request->password);
+            }
+
+            $user->update($data);
             return response()->json([
                 'success' => "User Edited Successfully",
             ], 201);
