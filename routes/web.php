@@ -11,12 +11,10 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/addUser' ,'addUser')->name('addUser');
     Route::get('/editUser/{id}', 'editUser')->name('editUser');
     Route::delete('/deleteUser/{id}', 'deleteUser')->name('deleteUser');
-
-
 });
 
 Route::controller(CategoryController::class)->group(function (){
-    Route::get('/category' , 'category')->name('category');
+    Route::get('/category' , 'category')->name('category')->middleware('AuthUser');
 });
 
 Route::controller(AuthController::class)->group(function () {
