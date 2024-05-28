@@ -140,7 +140,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ><i
+                                class="fa-solid fa-x"></i></button>
                     </div>
                     <div class="modal-body">
                         <form id="changePasswordForm">
