@@ -1,9 +1,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="../../index3.html" class="brand-link">
+            <div class="brand-link">
                 <img src="/img/user4.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8">
                 <span class="brand-text font-weight-light">Admin Panel</span>
-            </a>
+            </div>
 
             <!-- Sidebar -->
             <div class="sidebar">
@@ -13,7 +13,7 @@
                         <img src="/img/user4.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{ $user->full_name }}</a>
+                        <a href="{{route('profile')}}" class="d-block">{{ $user->full_name }}</a>
                     </div>
                 </div>
 

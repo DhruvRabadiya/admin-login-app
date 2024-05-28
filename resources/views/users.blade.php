@@ -78,7 +78,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"> <i class="fa-solid fa-x"></i></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"> <i
+                                class="fa-solid fa-x"></i></button>
                     </div>
                     <div class="modal-body">
                         <form id="user_form">
@@ -119,6 +120,8 @@
                         <input type="hidden" name="action" id="action" value="Add">
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn" id="change_password" name="change_password"
+                            style="margin-right: 68px;">Want to Change Your Password?</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <input type="button" class="btn btn-primary" name="action_btn" id="action_btn"
                             value="Add Users" />
@@ -126,20 +129,60 @@
                 </div>
             </div>
         </div>
+
+
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="current_password">Current Password</label>
+                                <input type="password" class="form-control" id="current_password"
+                                    placeholder="Current Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="new_password">New Password</label>
+                                <input type="password" class="form-control" id="new_password"
+                                    placeholder="New Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm_password">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirm_password"
+                                    placeholder="Confirm Password">
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Change Password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
     @endsection
 
     @section('scripts')
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <!-- DataTables -->
-       <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
         <!-- AdminLTE App -->
         {{-- <script src="{{ asset('js/adminlte.min.js') }}"></script> --}}
         <!-- SweetAlert -->
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        
+
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
         <script>
@@ -199,11 +242,12 @@
                     $('.modal-title').text('Add New User');
                     $('#action_btn').val('Add User');
                     $('#action').val('Add');
-                    $('#user_id').val(''); 
+                    $('#user_id').val('');
                     $('#form_result').html('');
                     $('#staticBackdrop').modal('show');
                     $('#user_form')[0].reset();
                     $('.pass').show();
+                    $('#change_password').hide();
                 });
 
                 $('#action_btn').click(function() {
@@ -248,6 +292,8 @@
                 // Edit button handler
                 $('body').on('click', '.editBtn', function() {
                     var id = $(this).data('id');
+                    $('#change_password').show();
+
 
                     $.ajax({
                         url: "{{ route('editUser', '') }}/" + id,
@@ -263,8 +309,8 @@
                             $('.modal-title').text('Edit User');
                             $('#action_btn').val('Edit User');
                             $('#action').val('Edit');
-                            $('.pass').hide(),
-                                $('#form_result').html('');
+                            $('.pass').hide();
+                            $('#form_result').html('');
                             $('#staticBackdrop').modal('show');
                         },
                         error: function(response) {
@@ -296,9 +342,16 @@
                     }
                 });
 
+                $('#change_password').click(function() {
+                    $('#exampleModal').modal('show');
+                    $('#staticBackdrop').modal('hide');
+                })
+
                 $('.btn-close, .btn-secondary').click(function() {
                     $('.errors').html('');
                     $('#staticBackdrop').modal('hide');
+                    $('#exampleModal').modal('hide');
+
                 });
             });
         </script>
