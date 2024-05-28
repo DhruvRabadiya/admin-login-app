@@ -133,6 +133,7 @@
 
 
 
+        <!-- Change Password Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -142,32 +143,35 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form id="changePasswordForm">
+                            <meta name="csrf-token" content="{{ csrf_token() }}" />
+                            <input type="hidden" name="user_id" id="change_password_user_id">
                             <div class="form-group">
-                                <label for="current_password">Current Password</label>
-                                <input type="password" class="form-control" id="current_password"
+                                <label for="old_password">Old Password</label>
+                                <input type="password" class="form-control" id="old_password" name="old_password"
                                     placeholder="Current Password">
+                                <span id="oldPassword_error" class='text-danger errors'></span>
                             </div>
                             <div class="form-group">
                                 <label for="new_password">New Password</label>
-                                <input type="password" class="form-control" id="new_password"
+                                <input type="password" class="form-control" id="new_password" name="new_password"
                                     placeholder="New Password">
+                                <span id="newPassword_error" class='text-danger errors'></span>
                             </div>
                             <div class="form-group">
                                 <label for="confirm_password">Confirm Password</label>
                                 <input type="password" class="form-control" id="confirm_password"
-                                    placeholder="Confirm Password">
+                                    name="confirm_password" placeholder="Confirm Password">
+                                <span id="confirmPassword_error" class='text-danger errors'></span>
                             </div>
-
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Change Password</button>
+                        <button type="button" class="btn btn-primary" id="change_password_btn">Change Password</button>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     @endsection
 
@@ -239,13 +243,13 @@
                 });
 
                 $('#add_Users').click(function() {
+                    $('#user_form')[0].reset();
                     $('.modal-title').text('Add New User');
                     $('#action_btn').val('Add User');
                     $('#action').val('Add');
                     $('#user_id').val('');
                     $('#form_result').html('');
                     $('#staticBackdrop').modal('show');
-                    $('#user_form')[0].reset();
                     $('.pass').show();
                     $('#change_password').hide();
                 });
@@ -293,7 +297,7 @@
                 $('body').on('click', '.editBtn', function() {
                     var id = $(this).data('id');
                     $('#change_password').show();
-
+                    console.log(id);
 
                     $.ajax({
                         url: "{{ route('editUser', '') }}/" + id,
@@ -342,10 +346,75 @@
                     }
                 });
 
+
                 $('#change_password').click(function() {
-                    $('#exampleModal').modal('show');
+                    var user_id = $('#user_id').val();
+                    $('#change_password_user_id').val(user_id);
                     $('#staticBackdrop').modal('hide');
-                })
+                    $('#exampleModal').modal('show');
+                    clearPasswordErrors();
+                });
+
+                $('#change_password_btn').click(function() {
+                    var formData = {
+                        user_id: $('#change_password_user_id').val(),
+                        old_password: $('#old_password').val(),
+                        new_password: $('#new_password').val(),
+                        new_password_confirmation: $('#confirm_password').val()
+                    };
+
+                    $.ajax({
+                        url: "{{ route('changePassword') }}",
+                        method: "POST",
+                        data: formData,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.errors) {
+                                if (data.errors.old_password) {
+                                    $('#oldPassword_error').html(data.errors.old_password[0]);
+                                }
+                                if (data.errors.new_password) {
+                                    $('#newPassword_error').html(data.errors.new_password[0]);
+                                }
+                                if (data.errors.new_password_confirmation) {
+                                    $('#confirmPassword_error').html(data.errors
+                                        .new_password_confirmation[0]);
+                                }
+                            }
+                            if (data.success) {
+                                $('#changePasswordForm')[0].reset();
+                                $('#exampleModal').modal('hide');
+                                swal("Success!", data.success, "success");
+                            }
+                        },
+                        error: function(xhr) {
+                            var response = xhr.responseJSON;
+                            if (response.errors) {
+                                if (response.errors.old_password) {
+                                    $('#oldPassword_error').html(response.errors.old_password[0]);
+                                }
+                                if (response.errors.new_password) {
+                                    $('#newPassword_error').html(response.errors.new_password[0]);
+                                }
+                                if (response.errors.new_password_confirmation) {
+                                    $('#confirmPassword_error').html(response.errors
+                                        .new_password_confirmation[0]);
+                                }
+                            }
+                        }
+                    });
+                });
+
+
+                $('#exampleModal').on('hidden.bs.modal', function() {
+                    clearPasswordErrors();
+                });
+
+                function clearPasswordErrors() {
+                    $('#oldPassword_error').html('');
+                    $('#newPassword_error').html('');
+                    $('#confirmPassword_error').html('');
+                }
 
                 $('.btn-close, .btn-secondary').click(function() {
                     $('.errors').html('');

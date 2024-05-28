@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function profilePage()
@@ -110,5 +110,25 @@ class UserController extends Controller
         } else {
             return response()->json(['error' => 'User not found'], 404);
         }
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'old_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::find($request->user_id);
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json(['errors' => ['old_password' => ['Old password does not match']]], 422);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json(['success' => 'Password changed successfully']);
     }
 }

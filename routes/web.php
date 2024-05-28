@@ -11,6 +11,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/addUser' ,'addUser')->name('addUser');
     Route::get('/editUser/{id}', 'editUser')->name('editUser');
     Route::delete('/deleteUser/{id}', 'deleteUser')->name('deleteUser');
+    Route::post('users/changePassword', 'changePassword')->name('changePassword');
 });
 
 Route::controller(CategoryController::class)->group(function (){
