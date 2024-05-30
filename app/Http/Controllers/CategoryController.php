@@ -35,4 +35,18 @@ class CategoryController extends Controller
         }
         return redirect()->route('profile');
     }
+
+
+    public function deleteCategory($id)
+    {
+        $category = Category::find($id);
+        if ($category) {
+            $category->delete();
+            return response()->json([
+                'success' => 'Category Deleted Successfully'
+            ], 201);
+        } else {
+            return response()->json(['error' => 'Category not found'], 404);
+        }
+    }
 }

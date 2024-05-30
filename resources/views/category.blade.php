@@ -9,6 +9,7 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
+            <meta name="csrf-token" content="{{ csrf_token() }}">
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -139,6 +140,29 @@
                     }
                 }]
             });
+
+            $('body').on('click', '.deleteBtn', function() {
+                var id = $(this).data('id');
+
+                if (confirm('Are You Sure Want To Delete This Category?')) {
+                    $.ajax({
+                        url: "{{ route('deleteCategory', '') }}/" + id,
+                        method: 'DELETE',
+                        success: function(response) {
+                            if (response.success) {
+                                swal("Success!", response.success, "success");
+                                table.ajax.reload(null,
+                                    false
+                                ); // Reload the DataTable without resetting the pagination
+                            }
+                        },
+                        error: function(response) {
+                            console.log(response);
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 @endsection
