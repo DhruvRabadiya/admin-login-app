@@ -14,7 +14,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Category</h1>
+                            <h1>Main Categories</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -36,8 +36,6 @@
                         <div class="col-md-12">
                             <div class="card card-primary card-outline">
                                 <div class="card-body box-profile">
-
-
                                     <div class="text-center">
                                         <section class="content">
                                             <table class="table table-bordered" id="tables_data">
@@ -45,9 +43,9 @@
                                                     <tr>
                                                         <th>No</th>
                                                         <th>Name</th>
-                                                        <th>Parent Category</th>
                                                         <th>URL</th>
                                                         <th>Description</th>
+                                                        <th>Sub-category</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -56,7 +54,6 @@
                                             </table>
                                         </section>
                                     </div>
-
                                 </div>
                                 <!-- /.card -->
                             </div>
@@ -74,6 +71,40 @@
 
     </div>
     <!-- ./wrapper -->
+
+    <!-- Subcategory Modal -->
+    <div class="modal fade" id="subcategoryModal" tabindex="-1" role="dialog" aria-labelledby="subcategoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="subcategoryModalLabel">Subcategories</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered" id="subcategory_table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>URL</th>
+                                <th>Description</th>
+                                <th>Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -112,10 +143,6 @@
                         name: 'category_name'
                     },
                     {
-                        data: 'parent_category',
-                        name: 'parentcategory.category_name'
-                    },
-                    {
                         data: 'url',
                         name: 'url'
                     },
@@ -123,7 +150,12 @@
                         data: 'description',
                         name: 'description'
                     },
-
+                    {
+                        data: 'subcategory',
+                        name: 'subcategory',
+                        orderable: false,
+                        searchable: false
+                    },
                     {
                         data: 'action',
                         name: 'action',
@@ -141,27 +173,54 @@
                 }]
             });
 
-            $('body').on('click', '.deleteBtn', function() {
-                var id = $(this).data('id');
-
-                if (confirm('Are You Sure Want To Delete This Category?')) {
-                    $.ajax({
-                        url: "{{ route('deleteCategory', '') }}/" + id,
-                        method: 'DELETE',
-                        success: function(response) {
-                            if (response.success) {
-                                swal("Success!", response.success, "success");
-                                table.ajax.reload(null,
-                                    false
-                                ); // Reload the DataTable without resetting the pagination
-                            }
-                        },
-                        error: function(response) {
-                            console.log(response);
-                        }
-                    });
-                }
+            $('#tables_data').on('click', '.viewSubcategories', function() {
+                var categoryId = $(this).data('id');
+                $.ajax({
+                    url: "{{ route('subcategory', ':id') }}".replace(':id', categoryId),
+                    method: 'GET',
+                    success: function(response) {
+                        var html = '';
+                        $.each(response, function(index, value) {
+                            html += '<tr>';
+                            html += '<td>' + (index + 1) + '</td>';
+                            html += '<td>' + value.category_name + '</td>';
+                            html += '<td>' + value.url + '</td>';
+                            html += '<td>' + value.description + '</td>';
+                            html += '<td>' + '<i class="fa-duotone fa-toggle-on"></i>' +value.status + '</td>';
+                            html += '</tr>';
+                        });
+                        $('#subcategory_table tbody').html(html);
+                        $('#subcategoryModal').modal('show');
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                });
             });
+
+                // Delete button handler
+                $('body').on('click', '.deleteBtn', function() {
+                    var id = $(this).data('id');
+
+                    if (confirm('Are You Sure Want To Delete This Category?')) {
+                        $.ajax({
+                            url: "{{ route('deleteCategory', '') }}/" + id,
+                            method: 'DELETE',
+                            success: function(response) {
+                                if (response.success) {
+                                    swal("Success!", response.success, "success");
+                                    table.ajax.reload(null,
+                                        false
+                                    ); // Reload the DataTable without resetting the pagination
+                                }
+                            },
+                            error: function(response) {
+                                console.log(response);
+                            }
+                        });
+                    }
+                });
+
 
         });
     </script>

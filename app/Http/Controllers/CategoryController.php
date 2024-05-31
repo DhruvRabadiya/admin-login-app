@@ -16,24 +16,37 @@ class CategoryController extends Controller
 
         if ($user) {
             if ($request->ajax()) {
-                $data = Category::with('parentcategory')->select(['id', 'category_name', 'parent_id', 'url', 'description']);
+                $data = Category::withCount('subcategories')->whereNull('parent_id')->select(['id', 'category_name', 'url', 'description']);
                 return Datatables::of($data)
                     ->addIndexColumn()
-                    ->addColumn('parent_category', function ($row) {
-                        return $row->parentcategory ? $row->parentcategory->category_name : 'N/A';
+                    ->addColumn('subcategory', function ($category) {
+                        return '<button type="button" class="viewSubcategories btn btn-info btn-sm" data-id="' . $category->id . '">View Subcategories</button>';
                     })
-                    ->addColumn('action', function ($data) {
-                        $editButton = '<button type="button" class="editBtn btn btn-primary btn-sm ml-2" data-id="' . $data->id . '">Edit</button>';
-                        $deleteButton = '<button type="button" class="deleteBtn btn btn-danger btn-sm ml-2" data-id="' . $data->id . '">Delete</button>';
-                        return $editButton . $deleteButton;
-                    })
-                    ->rawColumns(['action'])
+                    ->addColumn(
+                        'action',
+                        function ($data) {
+
+                            $editButton = '<button type="button" class="editBtn btn btn-primary btn-sm ml-2" data-id="' . $data->id . '">Edit</button>';
+
+                            $deleteButton =
+                                '<button type="button" class="deleteBtn btn btn-danger btn-sm ml-2" data-id="' . $data->id . '">Delete</button>';
+                            return  $editButton . $deleteButton;
+                        }
+                    )
+                    ->rawColumns(['subcategory' ,'action'])
+
                     ->make(true);
             }
-            $categories = Category::with('parentcategory')->get()->toArray();
-            return view('category', compact('user', 'categories'));
+            return view('category', compact('user'));
         }
         return redirect()->route('profile');
+    }
+
+    public function subcategories($categoryId)
+    {
+        $category = Category::findOrFail($categoryId);
+        $subcategories = $category->subcategories()->select('id', 'category_name', 'url', 'description', 'status')->get();
+        return response()->json($subcategories);
     }
 
 

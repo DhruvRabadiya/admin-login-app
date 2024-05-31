@@ -14,7 +14,7 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'parent_id' => 0,
+                'parent_id' => null,
                 'category_name' => 'Electronics',
                 'category_image' => 'electronics.jpg',
                 'category_discount' => 10.5,
@@ -50,7 +50,7 @@ class CategorySeeder extends Seeder
                 'status' => 1,
             ],
             [
-                'parent_id' => 0,
+                'parent_id' => null,
                 'category_name' => 'Clothing',
                 'category_image' => 'clothing.jpg',
                 'category_discount' => 15,
