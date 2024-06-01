@@ -16,6 +16,7 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(CategoryController::class)->group(function (){
     Route::get('/category' , 'category')->name('category')->middleware('AuthUser');
+    Route::post('/addCategory', 'addCategory')->name('addCategory'); 
     Route::delete('/deleteCategory/{id}', 'deleteCategory')->name('deleteCategory');
     Route::get('/subcategory/{id}', 'subcategories')->name('subcategory');
 });

@@ -26,14 +26,20 @@ class CategoryController extends Controller
                         'action',
                         function ($data) {
 
+                        $statusButton =
+                            '<button type="button" class=" btn  btn-sm ml-2" data-id="' . $data->id . '">' . '<i class="fa-duotone fa-toggle-on"></i>' . '</button>';
+
                             $editButton = '<button type="button" class="editBtn btn btn-primary btn-sm ml-2" data-id="' . $data->id . '">Edit</button>';
 
                             $deleteButton =
                                 '<button type="button" class="deleteBtn btn btn-danger btn-sm ml-2" data-id="' . $data->id . '">Delete</button>';
-                            return  $editButton . $deleteButton;
+                                
+                                
+                                
+                                return  $editButton . $deleteButton . $statusButton;
                         }
                     )
-                    ->rawColumns(['subcategory' ,'action'])
+                    ->rawColumns(['subcategory', 'action'])
 
                     ->make(true);
             }
@@ -49,6 +55,24 @@ class CategoryController extends Controller
         return response()->json($subcategories);
     }
 
+    public function addCategory(Request $request)
+    {
+        $request->validate([
+            'category_name' => 'required|string|max:255',
+            'url' => 'required|string|max:255',
+            'description' => 'required|string',
+            'status' => 'required|in:0,1'
+        ]);
+
+        Category::create([
+            'category_name' => $request->category_name,
+            'url' => $request->url,
+            'description' => $request->description,
+            'status' => $request->status,
+        ]);
+
+        return response()->json(['success' => 'Category Added Successfully']);
+    }
 
     public function deleteCategory($id)
     {

@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div align="right">
-                    <button type="button" name="add_Users" id="add_Users" class="btn btn-success"> Add
+                    <button type="button" name="add_Category" id="add_Category" class="btn btn-success"> Add
                         Category</button>
                 </div><!-- /.container-fluid -->
             </section>
@@ -71,6 +71,47 @@
 
     </div>
     <!-- ./wrapper -->
+
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryModalLabel">Add Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="categoryForm">
+                        <div class="form-group">
+                            <label for="category_name">Category Name</label>
+                            <input type="text" class="form-control" id="category_name" name="category_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="url">URL</label>
+                            <input type="text" class="form-control" id="url" name="url" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Status:</label><br>
+                                <input type="radio" id="status_active" name="status" value="1">
+                                <label for="status_active">Active</label><br>
+                                <input type="radio" id="status_inactive" name="status" value="0">
+                                <label for="status_inactive">Inactive</label><br>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Subcategory Modal -->
     <div class="modal fade" id="subcategoryModal" tabindex="-1" role="dialog" aria-labelledby="subcategoryModalLabel"
@@ -173,6 +214,43 @@
                 }]
             });
 
+            $('#add_Category').click(function() {
+                $('#categoryForm').trigger("reset");
+                $('#categoryModal').modal('show');
+            });
+
+            // Handle form submission
+            $('#categoryForm').on('submit', function(e) {
+                e.preventDefault();
+
+                // Create the formData object
+                var formData = {
+                    category_name: $('#category_name').val(),
+                    description: $('#description').val(),
+                    url: $('#url').val(),
+                    status: $('input[name="status"]:checked').val(),
+                };
+
+                // Perform the AJAX request
+                $.ajax({
+                    url: "{{ route('addCategory') }}", // Ensure this route matches your controller method
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            swal("Success!", response.success, "success");
+                            $('#categoryModal').modal('hide');
+                            $('#tables_data').DataTable().ajax.reload(null, false);
+                        } else {
+                            swal("Error!", response.error, "error");
+                        }
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                });
+            });
+
             $('#tables_data').on('click', '.viewSubcategories', function() {
                 var categoryId = $(this).data('id');
                 $.ajax({
@@ -186,7 +264,8 @@
                             html += '<td>' + value.category_name + '</td>';
                             html += '<td>' + value.url + '</td>';
                             html += '<td>' + value.description + '</td>';
-                            html += '<td>' + '<i class="fa-duotone fa-toggle-on"></i>' +value.status + '</td>';
+                            html += '<td>' + '<i class="fa-duotone fa-toggle-on"></i>' +
+                                value.status + '</td>';
                             html += '</tr>';
                         });
                         $('#subcategory_table tbody').html(html);
@@ -198,28 +277,28 @@
                 });
             });
 
-                // Delete button handler
-                $('body').on('click', '.deleteBtn', function() {
-                    var id = $(this).data('id');
+            // Delete button handler
+            $('body').on('click', '.deleteBtn', function() {
+                var id = $(this).data('id');
 
-                    if (confirm('Are You Sure Want To Delete This Category?')) {
-                        $.ajax({
-                            url: "{{ route('deleteCategory', '') }}/" + id,
-                            method: 'DELETE',
-                            success: function(response) {
-                                if (response.success) {
-                                    swal("Success!", response.success, "success");
-                                    table.ajax.reload(null,
-                                        false
-                                    ); // Reload the DataTable without resetting the pagination
-                                }
-                            },
-                            error: function(response) {
-                                console.log(response);
+                if (confirm('Are You Sure Want To Delete This Category?')) {
+                    $.ajax({
+                        url: "{{ route('deleteCategory', '') }}/" + id,
+                        method: 'DELETE',
+                        success: function(response) {
+                            if (response.success) {
+                                swal("Success!", response.success, "success");
+                                table.ajax.reload(null,
+                                    false
+                                ); // Reload the DataTable without resetting the pagination
                             }
-                        });
-                    }
-                });
+                        },
+                        error: function(response) {
+                            console.log(response);
+                        }
+                    });
+                }
+            });
 
 
         });
