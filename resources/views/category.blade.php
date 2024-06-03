@@ -301,27 +301,6 @@
                 }
             });
 
-            // $('body').on('click', '.statusButton', function() {
-            //     var id = $(this).data('id');
-
-            //     $.ajax({
-            //         url: "{{ route('toggleStatus', ':id') }}".replace(':id', id),
-            //         method: 'PUT',
-            //         success: function(response) {
-            //             if (response.success) {
-            //                 swal("Success!", response.success, "success");
-            //                 $('#tables_data').DataTable().ajax.reload(null,
-            //                     false); // Reload the DataTable without resetting the pagination
-            //             } else {
-            //                 swal("Error!", response.error, "error");
-            //             }
-            //         },
-            //         error: function(response) {
-            //             console.log(response);
-            //         }
-            //     });
-            // });
-
             $('body').on('click', '.statusBtn', function() {
                 var id = $(this).data('id');
 
