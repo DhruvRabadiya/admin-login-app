@@ -16,7 +16,7 @@ class CategoryController extends Controller
 
         if ($user) {
             if ($request->ajax()) {
-                $data = Category::withCount('subcategories')->whereNull('parent_id')->select(['id', 'category_name', 'url', 'description']);
+                $data = Category::withCount('subcategories')->whereNull('parent_id')->select(['id', 'category_name']);
                 return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('subcategory', function ($category) {
@@ -26,17 +26,17 @@ class CategoryController extends Controller
                         'action',
                         function ($data) {
 
-                        $statusButton =
-                            '<button type="button" class=" btn  btn-sm ml-2" data-id="' . $data->id . '">' . '<i class="fa-duotone fa-toggle-on"></i>' . '</button>';
+                            $statusButton =
+                                '<button type="button" class=" btn  btn-sm ml-2" data-id="' . $data->id . '">' . '<i class="fa-duotone fa-toggle-on"></i>' . '</button>';
 
                             $editButton = '<button type="button" class="editBtn btn btn-primary btn-sm ml-2" data-id="' . $data->id . '">Edit</button>';
 
                             $deleteButton =
                                 '<button type="button" class="deleteBtn btn btn-danger btn-sm ml-2" data-id="' . $data->id . '">Delete</button>';
-                                
-                                
-                                
-                                return  $editButton . $deleteButton . $statusButton;
+
+
+
+                            return  $editButton . $deleteButton . $statusButton;
                         }
                     )
                     ->rawColumns(['subcategory', 'action'])
@@ -51,7 +51,7 @@ class CategoryController extends Controller
     public function subcategories($categoryId)
     {
         $category = Category::findOrFail($categoryId);
-        $subcategories = $category->subcategories()->select('id', 'category_name', 'url', 'description', 'status')->get();
+        $subcategories = $category->subcategories()->select('id', 'category_name',   'status')->get();
         return response()->json($subcategories);
     }
 
@@ -59,15 +59,11 @@ class CategoryController extends Controller
     {
         $request->validate([
             'category_name' => 'required|string|max:255',
-            'url' => 'required|string|max:255',
-            'description' => 'required|string',
-            'status' => 'required|in:0,1'
+            'status' => 'required|boolean',
         ]);
 
         Category::create([
             'category_name' => $request->category_name,
-            'url' => $request->url,
-            'description' => $request->description,
             'status' => $request->status,
         ]);
 

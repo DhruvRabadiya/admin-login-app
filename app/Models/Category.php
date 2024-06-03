@@ -11,11 +11,11 @@ class Category extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'parent_id', 'category_name', 'description', 'url', 'status'
+        'parent_id', 'category_name', 'status'
     ];
     public function parentcategory()
     {
-        return $this->hasOne('App\Models\Category', 'id', 'parent_id')->select('id', 'category_name', 'url')->where('status', 1);
+        return $this->hasOne('App\Models\Category', 'id', 'parent_id')->select('id', 'category_name')->where('status', 1);
     }
 
     public function subcategories()

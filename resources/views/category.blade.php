@@ -43,8 +43,6 @@
                                                     <tr>
                                                         <th>No</th>
                                                         <th>Name</th>
-                                                        <th>URL</th>
-                                                        <th>Description</th>
                                                         <th>Sub-category</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -90,20 +88,12 @@
                             <input type="text" class="form-control" id="category_name" name="category_name" required>
                         </div>
                         <div class="form-group">
-                            <label for="url">URL</label>
-                            <input type="text" class="form-control" id="url" name="url" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" id="description" name="description" required></textarea>
-                        </div>
-                        <div class="form-group">
                             <div class="form-group">
                                 <label>Status:</label><br>
-                                <input type="radio" id="status_active" name="status" value="1">
-                                <label for="status_active">Active</label><br>
-                                <input type="radio" id="status_inactive" name="status" value="0">
-                                <label for="status_inactive">Inactive</label><br>
+                                <select for="status" class="form-control" id="status" name="status">
+                                    <option value="1">Active</option>
+                                    <option value="0">In-active</option>
+                                </select>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -130,8 +120,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
-                                <th>URL</th>
-                                <th>Description</th>
                                 <th>Status</th>
 
                             </tr>
@@ -184,14 +172,6 @@
                         name: 'category_name'
                     },
                     {
-                        data: 'url',
-                        name: 'url'
-                    },
-                    {
-                        data: 'description',
-                        name: 'description'
-                    },
-                    {
                         data: 'subcategory',
                         name: 'subcategory',
                         orderable: false,
@@ -226,9 +206,7 @@
                 // Create the formData object
                 var formData = {
                     category_name: $('#category_name').val(),
-                    description: $('#description').val(),
-                    url: $('#url').val(),
-                    status: $('input[name="status"]:checked').val(),
+                    status: $('#status').val() === '1' ? 1 : 0,
                 };
 
                 // Perform the AJAX request
@@ -262,8 +240,6 @@
                             html += '<tr>';
                             html += '<td>' + (index + 1) + '</td>';
                             html += '<td>' + value.category_name + '</td>';
-                            html += '<td>' + value.url + '</td>';
-                            html += '<td>' + value.description + '</td>';
                             html += '<td>' + '<i class="fa-duotone fa-toggle-on"></i>' +
                                 value.status + '</td>';
                             html += '</tr>';
@@ -299,8 +275,6 @@
                     });
                 }
             });
-
-
         });
     </script>
 @endsection
