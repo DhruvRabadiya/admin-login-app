@@ -83,6 +83,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="categoryForm">
+                        <input type="hidden" name="category_id" id="category_id">
+
                         <div class="form-group">
                             <label for="category_name">Category Name</label>
                             <input type="text" class="form-control" id="category_name" name="category_name" required>
@@ -197,23 +199,25 @@
             $('#add_Category').click(function() {
                 $('#categoryForm').trigger("reset");
                 $('#categoryModal').modal('show');
+                $('#category_id').val('');
+                        $('.modal-title').text('Add Category');
+                
             });
 
             // Handle form submission
             $('#categoryForm').on('submit', function(e) {
                 e.preventDefault();
 
-                // Create the formData object
-                var formData = {
-                    category_name: $('#category_name').val(),
-                    status: $('#status').val() === '1' ? 1 : 0,
-                };
+                  var formData = new FormData($('#categoryForm')[0]);
+
 
                 // Perform the AJAX request
                 $.ajax({
-                    url: "{{ route('addCategory') }}", // Ensure this route matches your controller method
+                    url: "{{ route('addCategory') }}",
                     method: 'POST',
                     data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response.success) {
                             swal("Success!", response.success, "success");
@@ -222,6 +226,26 @@
                         } else {
                             swal("Error!", response.error, "error");
                         }
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                });
+            });
+            $('body').on('click', '.editBtn', function() {
+                var id = $(this).data('id');
+                console.log(id);
+
+                $.ajax({
+                    url: "{{ route('editCategory', '') }}/" + id,
+                    method: 'GET',
+                    success: function(response) {
+                        console.log(response.status);
+                        $('#category_name').val(response.category_name);
+                        $('#status').val(response.status);
+                        $('#category_id').val(response.id);
+                        $('.modal-title').text('Edit Category');
+                        $('#categoryModal').modal('show');
                     },
                     error: function(response) {
                         console.log(response);

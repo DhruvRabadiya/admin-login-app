@@ -298,7 +298,7 @@
                 $('body').on('click', '.editBtn', function() {
                     var id = $(this).data('id');
                     $('#change_password').show();
-                    console.log(id);
+                    // console.log(id);
 
                     $.ajax({
                         url: "{{ route('editUser', '') }}/" + id,

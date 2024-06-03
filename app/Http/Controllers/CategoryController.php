@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-
 class CategoryController extends Controller
 {
     public function category(Request $request)
@@ -57,17 +56,39 @@ class CategoryController extends Controller
 
     public function addCategory(Request $request)
     {
-        $request->validate([
-            'category_name' => 'required|string|max:255',
-            'status' => 'required|boolean',
-        ]);
+        if ($request->category_id != null) {
+            $category = Category::find($request->category_id);
+            if (!$category) {
+                abort(404);
+            }
+            $data = $request->only('category_name', 'status');
+            $category->update($data);
+            return response()->json([
+                'success' => "User Edited Successfully",
+            ], 201);
+        } else {
+            $request->validate([
+                'category_name' => 'required|string|max:255',
+                'status' => 'required|integer',
+            ]);
 
-        Category::create([
-            'category_name' => $request->category_name,
-            'status' => $request->status,
-        ]);
+            Category::create([
+                'category_name' => $request->category_name,
+                'status' => $request->status,
+            ]);
 
-        return response()->json(['success' => 'Category Added Successfully']);
+            return response()->json(['success' => 'Category Added Successfully']);
+        }
+    }
+
+    public function editCategory($id)
+    {
+        $category = Category::find($id);
+        if ($category) {
+            return response()->json($category);
+        } else {
+            return response()->json(['error' => 'Category not found'], 404);
+        }
     }
 
     public function deleteCategory($id)

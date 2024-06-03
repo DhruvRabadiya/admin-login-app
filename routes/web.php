@@ -6,19 +6,20 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/profile','profilePage')->name('profile')->middleware('AuthUser');
+    Route::get('/profile', 'profilePage')->name('profile')->middleware('AuthUser');
     Route::get('/allUsers', 'allUsers')->name('allUsers');
-    Route::post('/addUser' ,'addUser')->name('addUser');
+    Route::post('/addUser', 'addUser')->name('addUser');
     Route::get('/editUser/{id}', 'editUser')->name('editUser');
     Route::delete('/deleteUser/{id}', 'deleteUser')->name('deleteUser');
     Route::post('users/changePassword', 'changePassword')->name('changePassword');
 });
 
-Route::controller(CategoryController::class)->group(function (){
-    Route::get('/category' , 'category')->name('category')->middleware('AuthUser');
-    Route::post('/addCategory', 'addCategory')->name('addCategory'); 
+Route::controller(CategoryController::class)->group(function () {
+    Route::get('/category', 'category')->name('category')->middleware('AuthUser');
+    Route::post('/addCategory', 'addCategory')->name('addCategory');
     Route::delete('/deleteCategory/{id}', 'deleteCategory')->name('deleteCategory');
     Route::get('/subcategory/{id}', 'subcategories')->name('subcategory');
+    Route::get('/editCategory/{id}', 'editCategory')->name('editCategory');
 });
 
 Route::controller(AuthController::class)->group(function () {
