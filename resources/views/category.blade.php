@@ -141,6 +141,7 @@
 
 @section('scripts')
     <!-- jQuery -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- DataTables -->
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -200,15 +201,15 @@
                 $('#categoryForm').trigger("reset");
                 $('#categoryModal').modal('show');
                 $('#category_id').val('');
-                        $('.modal-title').text('Add Category');
-                
+                $('.modal-title').text('Add Category');
+
             });
 
             // Handle form submission
             $('#categoryForm').on('submit', function(e) {
                 e.preventDefault();
 
-                  var formData = new FormData($('#categoryForm')[0]);
+                var formData = new FormData($('#categoryForm')[0]);
 
 
                 // Perform the AJAX request
@@ -298,6 +299,48 @@
                         }
                     });
                 }
+            });
+
+            // $('body').on('click', '.statusButton', function() {
+            //     var id = $(this).data('id');
+
+            //     $.ajax({
+            //         url: "{{ route('toggleStatus', ':id') }}".replace(':id', id),
+            //         method: 'PUT',
+            //         success: function(response) {
+            //             if (response.success) {
+            //                 swal("Success!", response.success, "success");
+            //                 $('#tables_data').DataTable().ajax.reload(null,
+            //                     false); // Reload the DataTable without resetting the pagination
+            //             } else {
+            //                 swal("Error!", response.error, "error");
+            //             }
+            //         },
+            //         error: function(response) {
+            //             console.log(response);
+            //         }
+            //     });
+            // });
+
+            $('body').on('click', '.statusBtn', function() {
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url: "{{ route('toggleStatus', ':id') }}".replace(':id', id),
+                    method: 'PUT',
+                    success: function(response) {
+                        if (response.success) {
+                            swal("Success!", response.success, "success");
+                            $('#tables_data').DataTable().ajax.reload(null,
+                            false); // Reload the DataTable without resetting the pagination
+                        } else {
+                            swal("Error!", response.error, "error");
+                        }
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                });
             });
         });
     </script>

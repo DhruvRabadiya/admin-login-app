@@ -15,7 +15,10 @@ class CategoryController extends Controller
 
         if ($user) {
             if ($request->ajax()) {
-                $data = Category::withCount('subcategories')->whereNull('parent_id')->select(['id', 'category_name']);
+                $data = Category::withCount('subcategories')
+                    ->whereNull('parent_id')
+                    ->select(['id', 'category_name', 'status']); // Include status field here
+
                 return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('subcategory', function ($category) {
@@ -24,22 +27,18 @@ class CategoryController extends Controller
                     ->addColumn(
                         'action',
                         function ($data) {
-
-                            $statusButton =
-                                '<button type="button" class=" btn  btn-sm ml-2" data-id="' . $data->id . '">' . '<i class="fa-duotone fa-toggle-on"></i>' . '</button>';
+                            $statusButton = '<button type="button" class="statusBtn btn btn-secondary btn-sm ml-2" data-id="' . $data->id . '">';
+                            $statusButton .= $data->status ? 'Active' : 'Inactive';
+                            $statusButton .= '</button>';
 
                             $editButton = '<button type="button" class="editBtn btn btn-primary btn-sm ml-2" data-id="' . $data->id . '">Edit</button>';
 
-                            $deleteButton =
-                                '<button type="button" class="deleteBtn btn btn-danger btn-sm ml-2" data-id="' . $data->id . '">Delete</button>';
+                            $deleteButton = '<button type="button" class="deleteBtn btn btn-danger btn-sm ml-2" data-id="' . $data->id . '">Delete</button>';
 
-
-
-                            return  $editButton . $deleteButton . $statusButton;
+                            return $statusButton .$editButton . $deleteButton ;
                         }
                     )
                     ->rawColumns(['subcategory', 'action'])
-
                     ->make(true);
             }
             return view('category', compact('user'));
@@ -99,6 +98,19 @@ class CategoryController extends Controller
             return response()->json([
                 'success' => 'Category Deleted Successfully'
             ], 201);
+        } else {
+            return response()->json(['error' => 'Category not found'], 404);
+        }
+    }
+    public function toggleStatus($id)
+    {
+        $category = Category::find($id);
+        if ($category) {
+            // Toggle the status
+            $category->status = $category->status ? 0 : 1; // Toggle between 0 and 1
+            $category->save();
+
+            return response()->json(['success' => 'Category status toggled successfully', 'status' => $category->status]);
         } else {
             return response()->json(['error' => 'Category not found'], 404);
         }

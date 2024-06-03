@@ -20,6 +20,8 @@ Route::controller(CategoryController::class)->group(function () {
     Route::delete('/deleteCategory/{id}', 'deleteCategory')->name('deleteCategory');
     Route::get('/subcategory/{id}', 'subcategories')->name('subcategory');
     Route::get('/editCategory/{id}', 'editCategory')->name('editCategory');
+    Route::put('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+
 });
 
 Route::controller(AuthController::class)->group(function () {
