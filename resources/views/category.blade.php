@@ -306,7 +306,8 @@
                                 html += '<tr>';
                                 html += '<td>' + (index + 1) + '</td>';
                                 html += '<td>' + value.category_name + '</td>';
-                                html += '<td>' + (value.status ? 'Active' : 'Inactive') + '</td>';
+                                html += '<td>' + (value.status ? 'Active' :
+                                    'Inactive') + '</td>';
                                 html += '</tr>';
                             });
                         } else {

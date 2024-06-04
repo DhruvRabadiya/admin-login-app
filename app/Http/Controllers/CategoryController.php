@@ -15,6 +15,7 @@ class CategoryController extends Controller
 
         if ($user) {
             $categories = Category::whereNull('parent_id')->get();
+
             if ($request->ajax()) {
                 $data = Category::withCount('subcategories')
                     ->whereNull('parent_id')
@@ -39,13 +40,13 @@ class CategoryController extends Controller
 
                             $deleteButton = '<button type="button" class="deleteBtn btn btn-danger btn-sm ml-2" data-id="' . $data->id . '">Delete</button>';
                             $addSubCategory = '<button type="button" class="addSubCategoryBtn btn btn-warning btn-sm ml-2" data-id="' . $data->id . '">Add Subcategory</button>';
-                            return $statusButton . $addSubCategory. $editButton . $deleteButton;
+                            return $statusButton . $addSubCategory . $editButton . $deleteButton;
                         }
                     )
                     ->rawColumns(['subcategory', 'action'])
                     ->make(true);
             }
-            return view('category', compact('user' , 'categories'));
+            return view('category', compact('user', 'categories'));
         }
         return redirect()->route('profile');
     }
@@ -137,5 +138,4 @@ class CategoryController extends Controller
 
         return response()->json(['success' => 'Subcategory Added Successfully']);
     }
-
 }
