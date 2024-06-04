@@ -98,13 +98,24 @@ class CategoryController extends Controller
     public function deleteCategory($id)
     {
         $category = Category::find($id);
+
         if ($category) {
+            $this->deleteSubcategories($category);
             $category->delete();
+
             return response()->json([
-                'success' => 'Category Deleted Successfully'
+                'success' => 'Category and its subcategories deleted successfully'
             ], 201);
         } else {
             return response()->json(['error' => 'Category not found'], 404);
+        }
+    }
+
+    private function deleteSubcategories($category)
+    {
+        foreach ($category->subcategories as $subcategory) {
+            $this->deleteSubcategories($subcategory); // Recursively delete subcategories
+            $subcategory->delete();
         }
     }
     public function toggleStatus($id)
