@@ -14,6 +14,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         if ($user) {
+            $categories = Category::whereNull('parent_id')->get();
             if ($request->ajax()) {
                 $data = Category::withCount('subcategories')
                     ->whereNull('parent_id')
@@ -44,7 +45,7 @@ class CategoryController extends Controller
                     ->rawColumns(['subcategory', 'action'])
                     ->make(true);
             }
-            return view('category', compact('user'));
+            return view('category', compact('user' , 'categories'));
         }
         return redirect()->route('profile');
     }
@@ -118,4 +119,23 @@ class CategoryController extends Controller
             return response()->json(['error' => 'Category not found'], 404);
         }
     }
+    public function addSubCategory(Request $request)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'subcategory_name' => 'required|string|max:255',
+            'status' => 'required|integer',
+        ]);
+
+        // Create the subcategory
+        Category::create([
+            'parent_id' => $request->category_id,
+            'category_name' => $request->subcategory_name,
+            'status' => $request->status,
+        ]);
+
+        return response()->json(['success' => 'Subcategory Added Successfully']);
+    }
+
 }

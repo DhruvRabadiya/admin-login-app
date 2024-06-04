@@ -105,6 +105,49 @@
         </div>
     </div>
 
+    {{-- subcategory model  --}}
+    <div class="modal fade" id="subCategoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryModalLabel">Add Subcategory</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="subCategoryForm">
+                        <input type="hidden" name="category_id" id="category_id">
+                        <div class="form-group">
+                            <label for="parentCategory">Select Category</label>
+                            <select name="category_id" class="form-control" id="parentCategory" required>
+                                <option value="">Select Category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="subcategory_name">Subcategory Name</label>
+                            <input type="text" class="form-control" id="subcategory_name" name="subcategory_name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status:</label><br>
+                            <select for="status" class="form-control" id="status" name="status" required>
+                                <option value="1">Active</option>
+                                <option value="0">In-active</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Subcategory Modal -->
     <div class="modal fade" id="subcategoryModal" tabindex="-1" role="dialog" aria-labelledby="subcategoryModalLabel"
         aria-hidden="true">
@@ -123,7 +166,6 @@
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>Status</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -264,9 +306,7 @@
                                 html += '<tr>';
                                 html += '<td>' + (index + 1) + '</td>';
                                 html += '<td>' + value.category_name + '</td>';
-                                html += '<td>' +
-                                    '<i class="fa-duotone fa-toggle-on"></i>' +
-                                    value.status + '</td>';
+                                html += '<td>' + (value.status ? 'Active' : 'Inactive') + '</td>';
                                 html += '</tr>';
                             });
                         } else {
@@ -330,6 +370,34 @@
                     }
                 });
             });
+            $('body').on('click', '.addSubCategoryBtn', function() {
+                $('#subCategoryModal').modal('show');
+                $('#subCategoryForm').trigger("reset");
+            });
+            $('#subCategoryForm').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData($('#subCategoryForm')[0]);
+                $.ajax({
+                    url: "{{ route('addSubCategory') }}",
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            swal("Success!", response.success, "success");
+                            $('#subCategoryModal').modal('hide');
+                        } else {
+                            swal("Error!", response.error, "error");
+                        }
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                });
+            });
+
         });
     </script>
 @endsection

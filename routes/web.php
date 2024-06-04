@@ -21,7 +21,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::get('/subcategory/{id}', 'subcategories')->name('subcategory');
     Route::get('/editCategory/{id}', 'editCategory')->name('editCategory');
     Route::put('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
-
+    Route::post('/addSubCategory', 'addSubCategory')->name('addSubCategory');
 });
 
 Route::controller(AuthController::class)->group(function () {
