@@ -27,15 +27,18 @@ class CategoryController extends Controller
                     ->addColumn(
                         'action',
                         function ($data) {
-                            $statusButton = '<button type="button" class="statusBtn btn btn-secondary btn-sm ml-2" data-id="' . $data->id . '">';
-                            $statusButton .= $data->status ? 'Active' : 'Inactive';
+                            $statusClass = $data->status ? 'btn-success' : 'btn-danger';
+                            $statusText = $data->status ? 'Active' : 'Inactive';
+
+                            $statusButton = '<button type="button" class="statusBtn btn ' . $statusClass . ' btn-sm ml-2" data-id="' . $data->id . '">';
+                            $statusButton .= $statusText;
                             $statusButton .= '</button>';
 
                             $editButton = '<button type="button" class="editBtn btn btn-primary btn-sm ml-2" data-id="' . $data->id . '">Edit</button>';
 
                             $deleteButton = '<button type="button" class="deleteBtn btn btn-danger btn-sm ml-2" data-id="' . $data->id . '">Delete</button>';
-
-                            return $statusButton .$editButton . $deleteButton ;
+                            $addSubCategory = '<button type="button" class="addSubCategoryBtn btn btn-warning btn-sm ml-2" data-id="' . $data->id . '">Add Subcategory</button>';
+                            return $statusButton . $addSubCategory. $editButton . $deleteButton;
                         }
                     )
                     ->rawColumns(['subcategory', 'action'])

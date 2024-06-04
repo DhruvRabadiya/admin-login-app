@@ -235,8 +235,6 @@
             });
             $('body').on('click', '.editBtn', function() {
                 var id = $(this).data('id');
-                console.log(id);
-
                 $.ajax({
                     url: "{{ route('editCategory', '') }}/" + id,
                     method: 'GET',
@@ -260,15 +258,25 @@
                     url: "{{ route('subcategory', ':id') }}".replace(':id', categoryId),
                     method: 'GET',
                     success: function(response) {
-                        var html = '';
-                        $.each(response, function(index, value) {
+                        if (response.length) {
+                            var html = '';
+                            $.each(response, function(index, value) {
+                                html += '<tr>';
+                                html += '<td>' + (index + 1) + '</td>';
+                                html += '<td>' + value.category_name + '</td>';
+                                html += '<td>' +
+                                    '<i class="fa-duotone fa-toggle-on"></i>' +
+                                    value.status + '</td>';
+                                html += '</tr>';
+                            });
+                        } else {
+
                             html += '<tr>';
-                            html += '<td>' + (index + 1) + '</td>';
-                            html += '<td>' + value.category_name + '</td>';
-                            html += '<td>' + '<i class="fa-duotone fa-toggle-on"></i>' +
-                                value.status + '</td>';
-                            html += '</tr>';
-                        });
+                            html += '<td colspan="3" class="text-center">' +
+                                'No Subcategory of this category' + '</td>';
+                            html +=
+                                '</tr>';;
+                        }
                         $('#subcategory_table tbody').html(html);
                         $('#subcategoryModal').modal('show');
                     },
@@ -311,7 +319,8 @@
                         if (response.success) {
                             swal("Success!", response.success, "success");
                             $('#tables_data').DataTable().ajax.reload(null,
-                            false); // Reload the DataTable without resetting the pagination
+                                false
+                            ); // Reload the DataTable without resetting the pagination
                         } else {
                             swal("Error!", response.error, "error");
                         }
