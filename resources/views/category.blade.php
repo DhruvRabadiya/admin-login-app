@@ -331,23 +331,33 @@
             $('body').on('click', '.deleteBtn', function() {
                 var id = $(this).data('id');
 
-                if (confirm('Are You Sure Want To Delete This Category?')) {
-                    $.ajax({
-                        url: "{{ route('deleteCategory', '') }}/" + id,
-                        method: 'DELETE',
-                        success: function(response) {
-                            if (response.success) {
-                                swal("Success!", response.success, "success");
-                                table.ajax.reload(null,
-                                    false
-                                ); // Reload the DataTable without resetting the pagination
-                            }
-                        },
-                        error: function(response) {
-                            console.log(response);
+
+                swal({
+                        title: "Are you sure ?",
+                        text: "Want To Delete This Category and It\'s Subcategories!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: "{{ route('deleteCategory', '') }}/" + id,
+                                method: 'DELETE',
+                                success: function(response) {
+                                    if (response.success) {
+                                        swal("Success!", response.success, "success");
+                                        table.ajax.reload(null,
+                                            false
+                                        ); // Reload the DataTable without resetting the pagination
+                                    }
+                                },
+                                error: function(response) {
+                                    console.log(response);
+                                }
+                            });
                         }
                     });
-                }
             });
 
             $('body').on('click', '.statusBtn', function() {
