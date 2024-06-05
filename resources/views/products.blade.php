@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div align="right">
-                    <button type="button" name="add_Category" id="add_Category" class="btn btn-success"> Add
+                    <button type="button" name="add_Product" id="add_Product" class="btn btn-success"> Add
                         Products</button>
                 </div><!-- /.container-fluid -->
             </section>
@@ -71,22 +71,45 @@
     <!-- ./wrapper -->
 
     <!-- Add Category Modal -->
-    <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="productLabel" aria-hidden="true">
+    <div class="modal fade" id="productModel" tabindex="-1" role="dialog" aria-labelledby="productLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="productLabel">Add Category</h5>
+                    <h5 class="modal-title" id="productLabel">Add Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="categoryForm">
-                        <input type="hidden" name="category_id" id="category_id">
+                    <form id="productForm">
+                        <input type="hidden" name="product_id" id="product_id">
 
                         <div class="form-group">
-                            <label for="category_name">Category Name</label>
-                            <input type="text" class="form-control" id="category_name" name="category_name" required>
+                            <label for="product_name">Product Name</label>
+                            <input type="text" class="form-control" id="product_name" name="product_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Product Image</label>
+                            <input type="file" class="form-control" id="image" name="image" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="parentCategory">Select Category</label>
+                            <select name="category_id" class="form-control" id="category" required>
+                                <option value="">Select category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="parentCategory">Select subcategories</label>
+                            <select name="subcategory_id" class="form-control" id="subCategory" required>
+                                <option value="">Select Subcategory</option>
+                                @foreach ($subcategories as $subcategory)
+                                    <option value="{{ $subcategory->id }}">{{ $subcategory->category_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <div class="form-group">
@@ -161,6 +184,11 @@
                     }
                 }]
             });
+            //Add Product
+            $('#add_Product').click(function() {
+                $('#productModel').modal('show');
+            });
+
             // Delete button handler
             $('body').on('click', '.deleteBtn', function() {
                 var id = $(this).data('id');

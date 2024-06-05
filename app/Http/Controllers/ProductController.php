@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ class ProductController extends Controller
     public function products(Request $request)
     {
         $user = Auth::user();
+        $subcategories = Category::whereNotNull('parent_id')->get();
+        $categories = Category::whereNull('parent_id')->get();
 
         if ($user) {
             if ($request->ajax()) {
@@ -40,7 +43,7 @@ class ProductController extends Controller
                     ->rawColumns(['subcategory', 'action'])
                     ->make(true);
             }
-            return view('products', compact('user'));
+            return view('products', compact('user', 'subcategories', 'categories'));
         }
         return redirect()->route('profile');
     }
