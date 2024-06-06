@@ -27,6 +27,8 @@ Route::controller(CategoryController::class)->group(function () {
 Route::controller(ProductController::class)->group(function () {
     route::get('/products', 'products')->name('products')->middleware('AuthUser');
     Route::post('addProducts', 'addProduct')->name('addProduct');
+    Route::get('/editProduct/{id}', 'editProduct')->name('editProduct');
+
     Route::put('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
     Route::delete('/deleteProduct/{id}', 'deleteProduct')->name('deleteProduct');
 

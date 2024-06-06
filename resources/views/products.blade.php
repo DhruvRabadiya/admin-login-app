@@ -191,7 +191,42 @@
             //Add Product
             $('#add_Product').click(function() {
                 $('#productModel').modal('show');
+                $('.modal-title').text('Add Product');
+                $('#productForm').trigger("reset");
+
+
             });
+            // Edit button handler
+            $('body').on('click', '.editBtn', function() {
+                var id = $(this).data('id');
+
+                // Fetch product details via AJAX
+                $.ajax({
+                    url: "{{ route('editProduct', '') }}/" + id,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.success) {
+                            // Populate form fields with product details
+                            $('#product_id').val(response.data.id);
+                            $('#product_name').val(response.data.product_name);
+                            $('#category').val(response.data.category_id);
+                            $('#subCategory').val(response.data.subcategory_id);
+                            $('#status').val(response.data.status);
+                        $('.modal-title').text('Edit Product');
+
+                            // Show the edit product modal
+                            $('#productModel').modal('show');
+                        } else {
+                            swal("Error!", response.error, "error");
+                        }
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                });
+            });
+
+            // Handle image update
             $('#productForm').submit(function(e) {
                 e.preventDefault();
 
@@ -217,6 +252,59 @@
                     }
                 });
             });
+
+            // $('#productForm').submit(function(e) {
+            //     e.preventDefault();
+
+            //     var formData = new FormData(this);
+
+            //     $.ajax({
+            //         url: "{{ route('addProduct') }}",
+            //         method: 'POST',
+            //         data: formData,
+            //         contentType: false,
+            //         processData: false,
+            //         success: function(response) {
+            //             if (response.success) {
+            //                 swal("Success!", response.success, "success");
+            //                 $('#productModel').modal('hide');
+            //                 $('#tables_data').DataTable().ajax.reload(null, false);
+            //             } else {
+            //                 swal("Error!", response.error, "error");
+            //             }
+            //         },
+            //         error: function(response) {
+            //             console.log(response);
+            //         }
+            //     });
+            // });
+            // $('body').on('click', '.editBtn', function() {
+            //     var id = $(this).data('id');
+
+            //     // Fetch product details via AJAX
+            //     $.ajax({
+            //         url: "{{ route('editProduct', '') }}/" + id,
+            //         method: 'GET',
+            //         success: function(response) {
+            //             if (response.success) {
+            //                 // Populate form fields with product details
+            //                 $('#product_id').val(response.data.id);
+            //                 $('#product_name').val(response.data.product_name);
+            //                 $('#category').val(response.data.category_id);
+            //                 $('#subCategory').val(response.data.subcategory_id);
+            //                 $('#status').val(response.data.status);
+
+            //                 // Show the edit product modal
+            //                 $('#productModel').modal('show');
+            //             } else {
+            //                 swal("Error!", response.error, "error");
+            //             }
+            //         },
+            //         error: function(response) {
+            //             console.log(response);
+            //         }
+            //     });
+            // });
 
             // Delete button handler
             $('body').on('click', '.deleteBtn', function() {

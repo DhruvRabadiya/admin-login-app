@@ -68,7 +68,7 @@ class CategoryController extends Controller
             $data = $request->only('category_name', 'status');
             $category->update($data);
             return response()->json([
-                'success' => "User Edited Successfully",
+                'success' => "Category Edited Successfully",
             ], 201);
         } else {
             $request->validate([

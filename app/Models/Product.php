@@ -10,4 +10,6 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
     public $timestamps = false;
+
+    protected $fillable = ['product_name', 'image', 'category_id', 'subcategory_id', 'status'];
 }
