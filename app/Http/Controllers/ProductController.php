@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Validator;
+
 
 class ProductController extends Controller
 {
@@ -48,6 +50,34 @@ class ProductController extends Controller
         return redirect()->route('profile');
     }
 
+    public function addProduct(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'product_name' => 'required',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'category_id' => 'required|exists:categories,id',
+        'subcategory_id' => 'required|exists:categories,id',
+        'status' => 'required|in:0,1',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors()->first()], 422);
+    }
+
+    // Handle file upload
+    $imagePath = $request->file('image')->store('products', 'public');
+
+    // Create product
+    $product = new Product();
+    $product->product_name = $request->product_name;
+    $product->image = $imagePath;
+    $product->category_id = $request->category_id;
+    $product->subcategory_id = $request->subcategory_id;
+    $product->status = $request->status;
+    $product->save();
+
+    return response()->json(['success' => 'Product added successfully'], 201);
+}
 
     public function deleteProduct($id){
         $product = Product::find($id);

@@ -166,7 +166,11 @@
                     },
                     {
                         data: 'image',
-                        name: 'image'
+                        name: 'image',
+                        render: function(data, type, full, meta) {
+                            var imageUrl = '{{ asset('storage/') }}/' + data;
+                            return '<img src="' + imageUrl + '" alt="Product Image" width="100">';
+                        }
                     },
                     {
                         data: 'action',
@@ -187,6 +191,31 @@
             //Add Product
             $('#add_Product').click(function() {
                 $('#productModel').modal('show');
+            });
+            $('#productForm').submit(function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: "{{ route('addProduct') }}",
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            swal("Success!", response.success, "success");
+                            $('#productModel').modal('hide');
+                            $('#tables_data').DataTable().ajax.reload(null, false);
+                        } else {
+                            swal("Error!", response.error, "error");
+                        }
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                });
             });
 
             // Delete button handler
